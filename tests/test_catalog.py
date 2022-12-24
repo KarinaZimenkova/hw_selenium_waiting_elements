@@ -1,12 +1,10 @@
 import pytest
-import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-# time.sleep(200)
 def test_check_catalog(test_setup, browser):
 
     WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "[title=Desktops]")))

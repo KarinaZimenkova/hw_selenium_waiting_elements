@@ -4,12 +4,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
 def test_check_card(test_setup, browser):
 
     WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#input-option226"))).click()
 
     WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR,
-                                                                      "#input-option226 > option:nth-child(2)"))).click()
+                                                                      "#input-option226 > option:nth-child(2)"))
+                                    ).click()
 
     WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR,
                                                                       "#button-cart"))).click()

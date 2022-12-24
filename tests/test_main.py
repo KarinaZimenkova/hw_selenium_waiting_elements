@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 def test_check_main(browser):
+
     WebDriverWait(browser, 1).until(EC.visibility_of(browser.find_element_by_id('logo')))
 
     WebDriverWait(browser, 1).until(
@@ -14,6 +15,6 @@ def test_check_main(browser):
 
     WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a#wishlist-total")))
 
-    WebDriverWait(browser, 3).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR,
-                                          "div.swiper-slide.text-center.swiper-slide-prev.swiper-slide-duplicate-next")))
+    WebDriverWait(browser, 1).until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, "#search")))
+
