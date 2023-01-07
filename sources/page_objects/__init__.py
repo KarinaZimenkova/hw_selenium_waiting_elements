@@ -1,3 +1,3 @@
-from admin_page import AdminPage
-
-admin_page_lib = AdminPage
+# from admin_page import AdminPage
+#
+# admin_page_lib = AdminPage

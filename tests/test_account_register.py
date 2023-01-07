@@ -1,27 +1,30 @@
 import pytest
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from sources.page_objects.register_page import RegisterPage
+from sources.common import create_prerequisites_storage
 
 
 def test_check_account_register(test_setup, browser):
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#content > h1")))
+    t = test_setup
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#input-firstname")))
+    t.register_page.find_header()
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#input-lastname")))
+    t.register_page.find_input_for_firstname()
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(
-        (By.CSS_SELECTOR,
-         "#content > form > fieldset:nth-child(3) > div > div > label:nth-child(2) > input[type=radio]")))
+    t.register_page.find_input_for_lastname()
 
-    WebDriverWait(browser, 2).until(EC.visibility_of_element_located((
-        By.CSS_SELECTOR, "#content > form > div > div > input[type=checkbox]:nth-child(2)")))
+    t.register_page.find_radio_btn()
+
+    t.register_page.find_checkbox()
 
 
 @pytest.fixture(scope='function')
 def test_setup(browser):
-    desktops_url = browser.url + "/index.php?route=account/register"
-    browser.get(desktops_url)
+    register_page = RegisterPage(browser)
+    register_page.open(browser.url)
+
+    prerequisites = create_prerequisites_storage()
+    prerequisites.register_page = register_page
+
+    yield prerequisites
