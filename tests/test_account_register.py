@@ -14,9 +14,9 @@ def test_check_account_register(test_setup, browser):
 
     t.register_page.find_input_for_lastname()
 
-    t.register_page.find_radio_btn()
+    t.register_page.find_acceptance_of_newsletter()
 
-    t.register_page.find_checkbox()
+    t.register_page.find_privacy_policy()
 
 
 @pytest.fixture(scope='function')
