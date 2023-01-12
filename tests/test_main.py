@@ -1,20 +1,16 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from sources.page_objects.main_page import MainPage
 
 
 def test_check_main(browser):
 
-    WebDriverWait(browser, 1).until(EC.visibility_of(browser.find_element_by_id('logo')))
+    main_page = MainPage(browser)
 
-    WebDriverWait(browser, 1).until(
-        EC.visibility_of_element_located(
-            (By.CSS_SELECTOR, "button.btn.btn-inverse.btn-block.btn-lg.dropdown-toggle"))).click()
+    main_page.find_logo()
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "p.text-center")))
+    main_page.view_shopping_cart()
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a#wishlist-total")))
+    main_page.find_text_in_shopping_cart()
 
-    WebDriverWait(browser, 1).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, "#search")))
+    main_page.find_total_wish_list()
 
+    main_page.find_search_block()
