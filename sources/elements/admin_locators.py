@@ -22,3 +22,12 @@ class AdminPageLocators:
     FILTER_BY_PRODUCT_NAME = (By.CSS_SELECTOR, "#input-name")
     FILTER_BTN = (By.CSS_SELECTOR, "#button-filter")
     MODEL_NAME_AFTER_FILTRATION = (By.CSS_SELECTOR, "#form-product > div > table > tbody > tr > td:nth-child(3)")
+    SELECT_ALL = (By.CSS_SELECTOR,
+                  "#form-product > div > table > thead > tr > td:nth-child(1) > input[type=checkbox]")
+    SELECT_FIRST_PRODUCT = (By.CSS_SELECTOR,
+                            "#form-product > div > table > tbody > tr:nth-child(1) > td:nth-child(1) > input[type=checkbox]")
+    DELETE_BTN = (By.CSS_SELECTOR,
+                  "#content > div.page-header > div > div > button.btn.btn-danger")
+    TABLE_BODY = (By.CSS_SELECTOR,
+                  "#form-product > div > table > tbody > tr > td")
+

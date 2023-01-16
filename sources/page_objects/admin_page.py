@@ -60,7 +60,7 @@ class AdminPage:
         WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(locators.SAVE_PRODUCT)
                                             ).click()
 
-    def get_alert_about_success_saved_product(self):
+    def get_success_alert(self):
         return WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(
             locators.ALERT_ABOUT_SUCCESS_SAVE_PRODUCT)).text
 
@@ -72,6 +72,10 @@ class AdminPage:
         WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(locators.FILTER_BTN)
                                             ).click()
 
+    def filter_products_by_product_name(self, product_name):
+        self.filter_products_by_product_name(product_name)
+        self.filter_products()
+
     def get_model_name(self):
         return WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(locators.MODEL_NAME_AFTER_FILTRATION)).text
 
@@ -81,4 +85,19 @@ class AdminPage:
     def find_forgotten_password_btn(self):
         WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(locators.FORGOTTEN_LOGIN_BTN))
 
+    def select_all_products(self):
+        WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(locators.SELECT_ALL)).click()
 
+    def select_first_product(self):
+        WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(locators.SELECT_FIRST_PRODUCT)).click()
+
+    def delete_products(self):
+        WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(locators.DELETE_BTN)).click()
+
+    def get_products_list(self):
+        return WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(locators.TABLE_BODY)).text
+
+    def login(self, username, password):
+        self.input_username(username)
+        self.input_password(password)
+        self.submit_login()
