@@ -26,3 +26,23 @@ class MainPage:
     def find_search_block(self):
         WebDriverWait(self.driver, 1).until(
             EC.visibility_of_element_located(locators.SEARCH_BLOCK))
+
+    def view_list_of_currencies(self):
+        WebDriverWait(self.driver, 1).until(EC.visibility_of_element_located(
+                locators.CURRENCY_DROPDOWN_BTN)).click()
+
+    def select_eur(self):
+        WebDriverWait(self.driver, 1).until(EC.visibility_of_element_located(
+                locators.EUR)).click()
+
+    def select_gbp(self):
+        WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(
+                locators.GBP)).click()
+
+    def add_product_to_shopping_cart(self):
+        WebDriverWait(self.driver, 1).until(EC.visibility_of_element_located(
+                locators.ADD_PRODUCT_TO_SHOPPING_CART)).click()
+
+    def get_currency_in_shopping_cart(self):
+        return WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(
+                locators.CURRENCY_IN_SHOPPING_CART)).text

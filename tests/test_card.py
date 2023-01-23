@@ -4,9 +4,6 @@ from sources.page_objects.card_page import CardPage
 from sources.common import create_prerequisites_storage
 
 
-import time
-
-
 def test_check_card(test_setup, browser):
 
     t = test_setup
@@ -20,8 +17,6 @@ def test_check_card(test_setup, browser):
     t.card_page.expand_shopping_cart()
 
     t.card_page.remove_product_from_shopping_cart()
-
-    time.sleep(5)
 
 
 @pytest.fixture(scope='function')

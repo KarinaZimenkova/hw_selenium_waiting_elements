@@ -3,8 +3,6 @@ import pytest
 from sources.page_objects.catalog_page import CatalogPage
 from sources.common import create_prerequisites_storage
 
-import time
-
 
 def test_check_catalog(test_setup, browser):
 

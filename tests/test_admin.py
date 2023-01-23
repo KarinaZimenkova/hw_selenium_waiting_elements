@@ -4,8 +4,6 @@ from selenium.webdriver.common.alert import Alert
 from sources.page_objects.admin_page import AdminPage
 from sources.common import create_prerequisites_storage
 
-import time
-
 
 def test_check_login(test_setup):
 
@@ -41,7 +39,6 @@ def test_add_new_product(test_setup_add_product):
     t.admin_page.input_model(model="27URTY")
 
     t.admin_page.save_product()
-    t.admin_page.get_alert_about_success_saved_product()
     assert 'Success: You have modified products!' in t.admin_page.get_alert_about_success_saved_product(), \
         "Текст в алерте не соотвествует ожидаемому при добавлении нового товара"
 
