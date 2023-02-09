@@ -1,29 +1,31 @@
 import pytest
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from sources.page_objects.card_page import CardPage
+from sources.common import create_prerequisites_storage
 
 
 def test_check_card(test_setup, browser):
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#input-option226"))).click()
+    t = test_setup
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR,
-                                                                      "#input-option226 > option:nth-child(2)"))
-                                    ).click()
+    t.card_page.expand_list_of_colors()
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR,
-                                                                      "#button-cart"))).click()
+    t.card_page.choose_red_color()
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR,
-                                                                      "#cart"))).click()
+    t.card_page.add_product_to_shopping_cart()
 
-    WebDriverWait(browser, 2).until(EC.visibility_of_element_located((
-        By.CSS_SELECTOR, "#cart > ul > li:nth-child(1) > table > tbody > tr > td:nth-child(5) > button"))).click()
+    t.card_page.expand_shopping_cart()
+
+    t.card_page.remove_product_from_shopping_cart()
 
 
 @pytest.fixture(scope='function')
 def test_setup(browser):
-    desktops_url = browser.url + "/desktops/canon-eos-5d"
-    browser.get(desktops_url)
+
+    card_page = CardPage(browser)
+    card_page.open(browser.url)
+
+    prerequisites = create_prerequisites_storage()
+    prerequisites.card_page = card_page
+
+    yield prerequisites

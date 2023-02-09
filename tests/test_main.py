@@ -1,20 +1,37 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from currency_converter import CurrencyConverter
+from sources.page_objects.main_page import MainPage
+
+import time
 
 
 def test_check_main(browser):
 
-    WebDriverWait(browser, 1).until(EC.visibility_of(browser.find_element_by_id('logo')))
+    main_page = MainPage(browser)
 
-    WebDriverWait(browser, 1).until(
-        EC.visibility_of_element_located(
-            (By.CSS_SELECTOR, "button.btn.btn-inverse.btn-block.btn-lg.dropdown-toggle"))).click()
+    main_page.find_logo()
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "p.text-center")))
+    main_page.view_shopping_cart()
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a#wishlist-total")))
+    main_page.find_text_in_shopping_cart()
 
-    WebDriverWait(browser, 1).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, "#search")))
+    main_page.find_total_wish_list()
 
+    main_page.find_search_block()
+
+
+def test_change_currency(browser):
+
+    main_page = MainPage(browser)
+
+    main_page.add_product_to_shopping_cart()
+    assert "$" in main_page.get_currency_in_shopping_cart(), "Итоговая сумма в корзине не в $"
+
+    main_page.view_list_of_currencies()
+
+    main_page.select_eur()
+    assert "€" in main_page.get_currency_in_shopping_cart(), "Итоговая сумма в корзине не в €"
+
+    main_page.view_list_of_currencies()
+
+    main_page.select_gbp()
+    assert "£" in main_page.get_currency_in_shopping_cart(), "Итоговая сумма в корзине не в £"

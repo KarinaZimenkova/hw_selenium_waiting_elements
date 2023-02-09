@@ -1,28 +1,31 @@
 import pytest
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from sources.page_objects.catalog_page import CatalogPage
+from sources.common import create_prerequisites_storage
 
 
 def test_check_catalog(test_setup, browser):
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "[title=Desktops]")))
+    t = test_setup
 
-    WebDriverWait(browser, 2).until(EC.visibility_of_element_located((
-        By.CSS_SELECTOR, f"[src='{browser.url}/image/cache/catalog/demo/apple_cinema_30-228x228.jpg']")))
+    t.catalog_page.find_desktop_title()
 
-    WebDriverWait(browser, 2).until(EC.visibility_of_element_located((
-            By.CSS_SELECTOR, "button#list-view.btn.btn-default")))
+    t.catalog_page.find_product_image(url=browser.url)
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(((
-        By.CSS_SELECTOR, "button[data-original-title='Add to Wish List']")))).click()
+    t.catalog_page.switch_to_list_view()
 
-    WebDriverWait(browser, 2).until(EC.visibility_of_element_located(((
-        By.CSS_SELECTOR, ".alert.alert-success.alert-dismissible"))))
+    t.catalog_page.add_to_wish_list()
+
+    t.catalog_page.check_alert_for_unauthorized_user()
 
 
 @pytest.fixture(scope='function')
 def test_setup(browser):
-    desktops_url = browser.url + "/desktops"
-    browser.get(desktops_url)
+
+    catalog_page = CatalogPage(browser)
+    catalog_page.open(browser.url)
+
+    prerequisites = create_prerequisites_storage()
+    prerequisites.catalog_page = catalog_page
+
+    yield prerequisites

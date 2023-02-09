@@ -1,27 +1,94 @@
 import pytest
+from faker import Faker
+from selenium.webdriver.common.alert import Alert
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from sources.page_objects.register_page import RegisterPage
+from sources.page_objects.admin_page import AdminPage
+from sources.common import create_prerequisites_storage
 
 
-def test_check_account_register(test_setup, browser):
+def test_register_new_account(test_setup, browser):
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#content > h1")))
+    t = test_setup
+    t.is_new_user = True
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#input-firstname")))
+    t.register_page.input_firstname(firstname=t.firstname)
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#input-lastname")))
+    t.register_page.input_lastname(lastname=t.lastname)
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(
-        (By.CSS_SELECTOR,
-         "#content > form > fieldset:nth-child(3) > div > div > label:nth-child(2) > input[type=radio]")))
+    t.register_page.input_email(email=t.email)
 
-    WebDriverWait(browser, 2).until(EC.visibility_of_element_located((
-        By.CSS_SELECTOR, "#content > form > div > div > input[type=checkbox]:nth-child(2)")))
+    t.register_page.input_msisdn(msisdn=t.msisdn)
+
+    t.register_page.input_password_with_confirm(password=t.password)
+
+    t.register_page.click_acceptance_of_newsletter()
+
+    t.register_page.click_privacy_policy()
+
+    t.register_page.continue_register()
+
+    t.register_page.find_success_registration_header()
+
+    t.register_page.continue_after_success_registration()
+
+    t.admin_page.open(browser.url)
+    t.admin_page.login(username='user', password='bitnami')
+
+    t.admin_page.view_customers()
+
+    t.admin_page.filter_by_fullname(fullname=t.fullname)
+
+    assert t.fullname == t.admin_page.fullname_in_first_entry(), \
+        f"Не найден новый пользователь. Fullname: {t.fullname}, email: {t.email} "
+
+
+def test_check_account_register(test_setup):
+
+    t = test_setup
+
+    t.register_page.find_header()
+
+    t.register_page.find_input_for_firstname()
+
+    t.register_page.find_input_for_lastname()
+
+    t.register_page.find_acceptance_of_newsletter()
+
+    t.register_page.find_privacy_policy()
 
 
 @pytest.fixture(scope='function')
 def test_setup(browser):
-    desktops_url = browser.url + "/index.php?route=account/register"
-    browser.get(desktops_url)
+
+    is_new_user = False
+
+    register_page = RegisterPage(browser)
+    register_page.open(browser.url)
+
+    admin_page = AdminPage(browser)
+
+    fake = Faker()
+    fullname = fake.name()
+    firstname, lastname = fullname.split(' ')
+    email = fake.email()
+    msisdn = fake.msisdn()
+    password = fake.password()
+
+    prerequisites = create_prerequisites_storage()
+    prerequisites.register_page = register_page
+    prerequisites.firstname = firstname
+    prerequisites.lastname = lastname
+    prerequisites.fullname = fullname
+    prerequisites.email = email
+    prerequisites.msisdn = msisdn
+    prerequisites.password = password
+    prerequisites.is_new_user = is_new_user
+    prerequisites.admin_page = admin_page
+
+    yield prerequisites
+
+    if prerequisites.is_new_user:
+        prerequisites.admin_page.select_all_customers()
+        prerequisites.admin_page.delete_products()
+        Alert(browser).accept()
